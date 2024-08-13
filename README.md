@@ -21,7 +21,8 @@ The DLL communicates with the service on the loopback network interface to check
 
 ## Prerequisites
 
-The filter DLL bitness must match the OS, so choose correctly. .NET 4.8 is required.
+* .NET 4.8
+* [Microsoft Visual Studio Installer Projects 2022 Extension](https://marketplace.visualstudio.com/items?itemName=VisualStudioClient.MicrosoftVisualStudio2022InstallerProjects)
 
 ## Installation
 
