@@ -17,7 +17,7 @@ OPF is comprised of two main parts:
    1. **OpenPasswordFilter.dll:** a custom password filter DLL that can be loaded by LSASS to vet incoming password changes;
    2. **OPFService.exe:** a C#-based service binary that provides a local user-space service for maintaining the dictionary and servicing requests.
 
-The DLL communicates with the service on the loopback network interface to check passwords against the configured database of forbidden values. This architecture is selected because it is difficult to reload the DLL after boot, and administrators are likely loathe to reboot their DCs when they want to add another forbidden password to the list. Just bear in mind how this architecture works so you understand what's going on.
+The DLL communicates with the service on the loopback network interface to check passwords against the configured database of forbidden values. This architecture is selected because it is difficult to reload the DLL after boot, and administrators are likely loathe to reboot their Domain Controllers when they want to add another forbidden password to the list. Just bear in mind how this architecture works so you understand what's going on.
 
 ## Prerequisites
 
@@ -25,6 +25,14 @@ The DLL communicates with the service on the loopback network interface to check
 * [Microsoft Visual Studio Installer Projects 2022 Extension](https://marketplace.visualstudio.com/items?itemName=VisualStudioClient.MicrosoftVisualStudio2022InstallerProjects)
 
 ## Installation
+
+### Auto
+
+Download the [latest release](https://github.com/D3vil0p3r/OpenPasswordFilter/releases/latest) and run the installer in all the Domain Controllers.
+
+Be sure that the files are installed inside the SYSVOL.
+
+### Manual
 
 You will want to configure the DLL so that Windows will load it for filtering passwords. Note that you will have to do this on all domain controllers, as any of them may end up servicing a password change request. Here is a link to Microsoft's documentation for setting up a password filter: https://learn.microsoft.com/en-us/windows/win32/secmgmt/installing-and-registering-a-password-filter-dll
 
@@ -38,7 +46,18 @@ Next, you will want to configure the OPF service. You can do so as follows:
 ```
 > sc create OPF binPath= "<full path to exe>\opfservice.exe" start= boot
 ```
-Finally, create two dictionary files in the same directory where you placed opfservice.exe named `opfmatch.txt` and `opfcont.txt`. These should contain one forbidden password per line, such as:
+
+### Configuration 
+
+Create the dictionary files you need inside the SYSVOL directory. OPF supports the following dictionary files to be created:
+* **opfmatch.txt:** all passwords that full match a string will be rejected
+* **opfcont.txt:** all passwords that partial match a string inside the file will be rejected
+* **opfregex.txt:** all passwords that match the specified regex patterns inside the file will be rejected
+* **opfnoregex.txt:** all passwords that does not match the specified regex patterns inside the file will be rejected
+
+Furthermore, you can create also **opfgroups.txt** where to insert only domain users the password filter will be applied to.
+
+For example, `opfmatch.txt` could contain one forbidden string per line, such as:
 ```
 Password1
 Password2
@@ -47,7 +66,7 @@ Summer15
 Summer2015
 ...
 ```
-Passwords in `opfmatch.txt` will be tested for full matches, and those in `opfcont.txt` will be tested for a partial match. This is useful for rejecting any password containing poison strings such as `password` and `welcome`. I recommend constructing a list of bad seeds, then using hashcat rules to build `opfcont.txt` with the sort of leet mangling users are likely to try, like so:
+I recommend constructing a list of bad seeds, then using hashcat rules to build `opfcont.txt` with the sort of leet mangling users are likely to try, like so:
 ```
 hashcat -r /usr/share/hashcat/rules/Incisive-leetspeak.rule --stdout seedwordlist | tr A-Z a-z | sort | uniq > opfcont.txt
 ```
@@ -57,8 +76,4 @@ unix2dos opfcont.txt
 ```
 If the service fails to start, it's likely an error ingesting the wordlists, and the line number of the problem entry will be written to the Application event log.
 
-Or you can skip all this and use one of the installers:
-
-TODO
-
-If all has gone well, reboot your DC and test by using the normal GUI password reset function to choose a password that is on your forbidden list.
+If all has gone well, reboot your Domain Controller and test by using the normal GUI password reset function to choose a password that is on your forbidden list.
