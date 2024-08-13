@@ -3,7 +3,7 @@ An open source custom password filter DLL and user-space service for Active Dire
 
 ## Introduction
 
-The original [OpenPasswordFilter](https://github.com/jephthai/OpenPasswordFilter) has been reworked to work with the latest .NET libraries.
+The original [OpenPasswordFilter](https://github.com/jephthai/OpenPasswordFilter) has been redesigned to work with the latest .NET libraries.
 
 The genesis of this idea comes from conducting many penetration tests where organizations have users who choose common passwords and the ultimate difficulty of controlling this behavior. The fact is that any domain of size will have some user who chose `Password1` or `Summer2015` or `Company123` as their password.  Any intruder or low-privilege user who can guess or obtain usernames for the domain can easily run through these very common passwords and start expanding the level of access in the domain.
 
