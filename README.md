@@ -34,7 +34,7 @@ Be sure that files are installed inside the SYSVOL directory.
 
 ### Manual
 
-You will want to configure the DLL so that Windows will load it for filtering passwords. Note that you will have to do this on all domain controllers, as any of them may end up servicing a password change request. Here is a link to Microsoft's documentation for setting up a password filter: https://learn.microsoft.com/en-us/windows/win32/secmgmt/installing-and-registering-a-password-filter-dll
+You will want to configure the DLL so that Windows will load it for filtering passwords. Note that you will have to do this on all domain controllers, as any of them may end up servicing a password change request. Read the Microsoft's documentation for [setting up a password filter](https://learn.microsoft.com/en-us/windows/win32/secmgmt/installing-and-registering-a-password-filter-dll).
 
 The bottom line is this:
   1. Copy `OpenPasswordFilter.dll` to `%WINDIR%\System32`;
