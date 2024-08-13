@@ -50,10 +50,10 @@ Next, you will want to configure the OPF service. You can do so as follows:
 ### Configuration 
 
 Create the dictionary files you need inside the SYSVOL directory. OPF supports the following dictionary files to be created:
-* **opfmatch.txt:** all passwords that full match a string will be rejected
-* **opfcont.txt:** all passwords that partial match a string inside the file will be rejected
-* **opfregex.txt:** all passwords that match the specified regex patterns inside the file will be rejected
-* **opfnoregex.txt:** all passwords that does not match the specified regex patterns inside the file will be rejected
+* **opfmatch.txt:** all passwords full matching a string will be rejected
+* **opfcont.txt:** all passwords partial matching a string inside the file will be rejected
+* **opfregex.txt:** all passwords matching the specified regex patterns inside the file will be rejected
+* **opfnoregex.txt:** all passwords not matching the specified regex patterns inside the file will be rejected
 
 Furthermore, you can create also **opfgroups.txt** where to insert only domain users the password filter will be applied to.
 
