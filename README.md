@@ -30,7 +30,7 @@ The DLL communicates with the service on the loopback network interface to check
 
 Download the [latest release](https://github.com/D3vil0p3r/OpenPasswordFilter/releases/latest) and run the installer in all the Domain Controllers.
 
-Be sure that the files are installed inside the SYSVOL.
+Be sure that files are installed inside the SYSVOL directory.
 
 ### Manual
 
